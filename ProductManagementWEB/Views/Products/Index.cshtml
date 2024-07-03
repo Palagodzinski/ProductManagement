@@ -1,0 +1,56 @@
+﻿ @model IEnumerable<Product>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Oflaguj wybrane produkty i zdecyduj które z nich nadają się do naszej oferty</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th></th>
+                <th>Nazwa</th>
+                <th>Ilość</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>
+                        @if (product.Images != null && product.Images.Any())
+                        {
+                            <img src="@product.Images.First()" alt="@product.Name" class="img-thumbnail" style="width: 50px; height: auto;" />
+                        }
+                    </td>
+                    <td>@product.Name</td>
+                    <td>@product.Quantity</td>
+                    <td>
+                        <a href="@Url.Action("Details", new { id = product.Id })" class="btn btn-info btn-sm">Szczegóły</a>
+                        @if (product.IsFlagged)
+                        {
+                            <button class="btn btn-danger btn-sm" disabled>Oflagowany</button>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("FlagProduct", new { id = product.Id })" class="btn btn-warning btn-sm">Flaguj</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-right mt-3">
+        <form asp-action="SaveFlags" method="post">
+            <button type="submit" class="btn btn-primary">Zapisz</button>
+        </form>
+    </div>
+
+</div>

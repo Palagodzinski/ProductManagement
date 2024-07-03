@@ -1,0 +1,46 @@
+USE [OrdersManagement]
+GO
+
+/****** Object:  Table [dbo].[BillingEntryTable]    Script Date: 02.07.2024 13:26:32 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[BillingEntryTable](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[BillingEntryId] [nvarchar](45) NOT NULL,
+	[OccurredAt] [datetime] NULL,
+	[BillingTypeId] [varchar](45) NOT NULL,
+	[BillingTypeName] [varchar](100) NOT NULL,
+	[OfferId] [int] NOT NULL,
+	[ValueAmount] [decimal](18, 2) NOT NULL,
+	[ValueCurrency] [nvarchar](10) NULL,
+	[TaxPercentage] [decimal](5, 2) NOT NULL,
+	[TaxAnnotation] [nvarchar](200) NULL,
+	[BalanceAmount] [decimal](18, 2) NOT NULL,
+	[BalanceCurrency] [nvarchar](10) NOT NULL,
+	[OrderId] [int] NOT NULL,
+ CONSTRAINT [PK_billing_lista] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[BillingEntryTable]  WITH CHECK ADD  CONSTRAINT [FK_BillingEntryTable_OfferTable] FOREIGN KEY([OfferId])
+REFERENCES [dbo].[OfferTable] ([Id])
+GO
+
+ALTER TABLE [dbo].[BillingEntryTable] CHECK CONSTRAINT [FK_BillingEntryTable_OfferTable]
+GO
+
+ALTER TABLE [dbo].[BillingEntryTable]  WITH CHECK ADD  CONSTRAINT [FK_BillingEntryTable_OrderTable] FOREIGN KEY([OrderId])
+REFERENCES [dbo].[OrderTable] ([id])
+GO
+
+ALTER TABLE [dbo].[BillingEntryTable] CHECK CONSTRAINT [FK_BillingEntryTable_OrderTable]
+GO
+
+
